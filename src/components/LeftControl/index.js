@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Animated,  TouchableWithoutFeedback, View, Easing } from "react-native";
+import { Animated,  TouchableWithoutFeedback, View, Easing, Dimensions } from "react-native";
 import { Button } from "../Button";
 import { em } from "../../utils";
 import { styles } from "./styles";
@@ -22,6 +22,10 @@ const airDropInActiveIcon = require('./../../assets/img/icons/inActive/airDrop.p
 const modemModeActiveIcon = require('./../../assets/img/icons/active/modemMode.png');
 const modemModeInActiveIcon = require('./../../assets/img/icons/inActive/modemMode.png');
 
+const top = Dimensions.get('window').height/4;
+const left = Dimensions.get('window').width/14;
+const duration = 200;
+
 export default class LeftControl extends Component {
 
     state = {
@@ -35,107 +39,109 @@ export default class LeftControl extends Component {
     };
 
     onShowAnimation = () => {
+        this.props.hideRightControl();
         Animated.parallel([
             Animated.timing(
                 this.state.animTop,
                 {
-                    toValue: em(250),
-                    duration: 500,
+                    toValue: em(top),
+                    duration
                 }
             ),
             Animated.timing(
                 this.state.animLeft,
                 {
-                    toValue: em(2),
-                    duration: 500,
+                    toValue: em(left),
+                    duration,
                 }
             ),
             Animated.timing(
                 this.state.animHeight,
                 {
                     toValue: em(350),
-                    duration: 500,
+                    duration,
                 }
             ),
             Animated.timing(
                 this.state.animWidth,
                 {
-                    toValue: em(350),
-                    duration: 500,
+                    toValue: em(300),
+                    duration,
                 }
             ),
             Animated.timing(
                 this.state.animOpacity,
                 {
                     toValue: em(1),
-                    duration: 500,
+                    duration,
                 }
             ),
             Animated.timing(
                 this.state.animPaddingTop,
                 {
                     toValue: em(0),
-                    duration: 500,
+                    duration
                 }
             ),
 
         ]).start();
         this.setState({
             isShowAnimation: true,
-        })
-
+        });
+        this.props.hideContent();
     };
 
     onHideAnimation = () => {
+        this.props.showContent();
+        this.props.showRightControl();
         Animated.parallel([
             Animated.timing(
                 this.state.animTop,
                 {
                     toValue: em(80),
-                    duration: 500,
+                    duration
                 }
             ),
             Animated.timing(
                 this.state.animLeft,
                 {
                     toValue: em(10),
-                    duration: 500,
+                    duration
                 }
             ),
             Animated.timing(
                 this.state.animHeight,
                 {
                     toValue: em(160),
-                    duration: 500,
+                    duration
                 }
             ),
             Animated.timing(
                 this.state.animWidth,
                 {
                     toValue: em(150),
-                    duration: 500,
+                    duration
                 }
             ),
             Animated.timing(
                 this.state.animOpacity,
                 {
                     toValue: em(0),
-                    duration: 500,
+                    duration
                 }
             ),
             Animated.timing(
                 this.state.animPaddingTop,
                 {
                     toValue: em(80),
-                    duration: 500,
+                    duration
                 }
             ),
-        ]).start();
-        setTimeout(() => {
+        ]).start(() => {
             this.setState({
                 isShowAnimation: false
             })
-        },500)
+        });
     };
 
     onPress = () => {
@@ -186,15 +192,15 @@ export default class LeftControl extends Component {
             height: animHeight,
             top: animTop,
             left: animLeft,
-            paddingTop: animPaddingTop
+            paddingTop: animPaddingTop,
+            opacity: this.props.controlOpacity
         };
 
         return(
             <TouchableWithoutFeedback onPress={this.state.isShowAnimation ? this.onHideAnimation : this.onPress}
                 onLongPress={this.state.isShowAnimation ? this.onHideAnimation : this.onShowAnimation}>
-
                 <Animated.View style={[
-                    styles.container, animatedStyles]}>
+                    styles.container, animatedStyles, {zIndex: this.state.isShowAnimation? 4 : 2}]}>
                     <View
                         style={[styles.iconsWrapper, {justifyContent: this.state.isShowAnimation ? 'space-around' : 'center'}]}>
                         <Button active={flyModeActiveIcon} inActive={flyModeInActiveIcon}/>

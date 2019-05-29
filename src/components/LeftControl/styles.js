@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0, 0.7)',
         overflow: 'hidden',
         position: 'absolute',
-        zIndex: 2
     },
     iconsWrapper: {
         alignItems: 'center',

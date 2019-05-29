@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0, 0.7)',
         overflow: 'hidden',
         position: 'absolute',
-        zIndex: 2,
         alignItems: 'center',
     },
     iconsWrapper: {
@@ -27,8 +26,8 @@ export const styles = StyleSheet.create({
         justifyContent:'center',
     },
     playerButton: {
-        width: 23,
-        height: 30,
-        borderRadius:5
+        width: em(23),
+        height: em(30),
+        borderRadius: em(5)
     }
 });
